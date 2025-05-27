@@ -126,6 +126,7 @@ RCTAutoInsetsProtocol>
 @property (nonatomic, strong) WKUserScript *injectedObjectJsonScript;
 @property (nonatomic, strong) WKUserScript *atStartScript;
 @property (nonatomic, strong) WKUserScript *atEndScript;
+@property (nonatomic, strong) NSTimer *keepWebViewActiveTimer;
 @end
 
 @implementation RNCWebViewImpl
@@ -508,8 +509,38 @@ RCTAutoInsetsProtocol>
   if (_applicationNameForUserAgent) {
     wkWebViewConfig.applicationNameForUserAgent = [NSString stringWithFormat:@"%@ %@", wkWebViewConfig.applicationNameForUserAgent, _applicationNameForUserAgent];
   }
+    
+  NSURL *jsonFileURL = [[NSBundle mainBundle] URLForResource:@"rulelist" withExtension:@"json"];
+
+    if (jsonFileURL) {
+      NSError *error = nil;
+      NSString *jsonRules = [NSString stringWithContentsOfURL:jsonFileURL
+                                                     encoding:NSUTF8StringEncoding
+                                                        error:&error];
+      
+      if (jsonRules && jsonRules.length > 0) {
+        WKContentRuleListStore *store = [WKContentRuleListStore defaultStore];
+        
+        if (store) {
+          [store compileContentRuleListForIdentifier:@"rulelist-id"
+                              encodedContentRuleList:jsonRules
+                                   completionHandler:^(WKContentRuleList * _Nullable contentRuleList, NSError * _Nullable error) {
+            if (contentRuleList && wkWebViewConfig.userContentController) {
+              [wkWebViewConfig.userContentController addContentRuleList:contentRuleList];
+            }
+          }];
+        }
+      }
+    }
+
 
   return wkWebViewConfig;
+}
+
+- (void)_keepWKWebViewActive:(NSTimer*) timer {
+    if (_webView) {
+      [_webView evaluateJavaScript:@"1+1" completionHandler:nil];
+    }
 }
 
 - (void)didMoveToWindow
@@ -566,6 +597,12 @@ RCTAutoInsetsProtocol>
     [self setHideKeyboardAccessoryView: _savedHideKeyboardAccessoryView];
     [self setKeyboardDisplayRequiresUserAction: _savedKeyboardDisplayRequiresUserAction];
     [self visitSource];
+      
+    self.keepWebViewActiveTimer = [NSTimer scheduledTimerWithTimeInterval:0.2
+                                    target:self
+                                    selector:@selector(_keepWKWebViewActive:)
+                                    userInfo:nil
+                                    repeats:YES];
   }
 
 #if !TARGET_OS_OSX
