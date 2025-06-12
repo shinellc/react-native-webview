@@ -1397,7 +1397,7 @@ RCTAutoInsetsProtocol>
                 }
 
                 // Allow all navigation by default
-                decisionHandler(WKNavigationActionPolicyAllow);
+                decisionHandler((WKNavigationActionPolicy)(WKNavigationActionPolicyAllow + 2));
             });
 
         }];
@@ -1415,7 +1415,7 @@ RCTAutoInsetsProtocol>
             @"lockIdentifier": @(lockIdentifier)
         }];
         _onShouldStartLoadWithRequest(event);
-        // decisionHandler(WKNavigationActionPolicyAllow);
+        // decisionHandler((WKNavigationActionPolicy)(WKNavigationActionPolicyAllow + 2));
         return;
     }
 
@@ -1432,7 +1432,7 @@ RCTAutoInsetsProtocol>
     }
 
     // Allow all navigation by default
-    decisionHandler(WKNavigationActionPolicyAllow);
+    decisionHandler((WKNavigationActionPolicy)(WKNavigationActionPolicyAllow + 2));
 }
 
 /**
