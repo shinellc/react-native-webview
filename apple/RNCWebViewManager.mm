@@ -216,4 +216,7 @@ QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(postMessage, message:(NSString *)message,
 QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(injectJavaScript, script:(NSString *)script, script)
 QUICK_RCT_EXPORT_COMMAND_METHOD_PARAMS(clearCache, includeDiskFiles:(BOOL)includeDiskFiles, includeDiskFiles)
 
+// iOS: clear WKWebView back-forward history
+QUICK_RCT_EXPORT_COMMAND_METHOD(clearHistory)  // manually added for iOS
+
 @end

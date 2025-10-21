@@ -149,6 +149,8 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
 - (void)stopLoading;
 - (void)requestFocus;
 - (void)clearCache:(BOOL)includeDiskFiles;
+#pragma mark - History
+- (void)clearHistory;  // manually added for iOS
 #ifdef RCT_NEW_ARCH_ENABLED
 - (void)destroyWebView;
 #endif

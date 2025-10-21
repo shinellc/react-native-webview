@@ -1724,6 +1724,24 @@ didFinishNavigation:(WKNavigation *)navigation
   [self removeData:dataTypes];
 }
 
+ // manually added for iOS
+- (void)clearHistory
+{
+  if (_webView == nil) {
+    return;
+  }
+  WKWebView *wkwv = _webView;
+  SEL clearSelector = NSSelectorFromString(@"_clear");
+  if (![wkwv.backForwardList respondsToSelector:clearSelector]) {
+    RCTLogWarn(@"WKBackForwardList doesn't respond to _clear; clearHistory ignored");
+    return;
+  }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+  [wkwv.backForwardList performSelector:clearSelector];
+#pragma clang diagnostic pop
+}
+
 - (void)removeData:(NSSet *)dataTypes
 {
   if (_webView == nil) {

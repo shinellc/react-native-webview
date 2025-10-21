@@ -548,7 +548,11 @@ Class<RCTComponentViewProtocol> RNCWebViewCls(void)
 }
 
 - (void)clearHistory {
-    // android only
+    // manually added for iOS
+    if (_view == nil) {
+        return;
+    }
+    [_view clearHistory];
 }
 
 @end
