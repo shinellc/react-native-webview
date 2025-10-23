@@ -510,7 +510,7 @@ RCTAutoInsetsProtocol>
     wkWebViewConfig.applicationNameForUserAgent = [NSString stringWithFormat:@"%@ %@", wkWebViewConfig.applicationNameForUserAgent, _applicationNameForUserAgent];
   }
     
-  NSURL *jsonFileURL = [[NSBundle mainBundle] URLForResource:@"easylist" withExtension:@"json"];
+  NSURL *jsonFileURL = [[NSBundle mainBundle] URLForResource:@"shinylist" withExtension:@"json"];
 
     if (jsonFileURL) {
       NSError *error = nil;
@@ -522,7 +522,7 @@ RCTAutoInsetsProtocol>
         WKContentRuleListStore *store = [WKContentRuleListStore defaultStore];
         
         if (store) {
-          [store compileContentRuleListForIdentifier:@"easylist-id"
+          [store compileContentRuleListForIdentifier:@"shinylist-id"
                               encodedContentRuleList:jsonRules
                                    completionHandler:^(WKContentRuleList * _Nullable contentRuleList, NSError * _Nullable error) {
             if (contentRuleList && wkWebViewConfig.userContentController) {

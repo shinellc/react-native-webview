@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
 
   s.source_files    = "apple/**/*.{h,m,mm,swift}"
 
-  s.resource = "apple/easylist.json"
+  s.resource = "apple/shinylist.json"
 
   if defined?(install_modules_dependencies()) != nil
     install_modules_dependencies(s);
